@@ -21,9 +21,10 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const [sideMenuState, setSideMenu] = useState(false);
+  const closeSideMenu = () => setSideMenu(false);
 
   return (
-    <SideMenu menu={<SideMenuView />} isOpen={sideMenuState}>
+    <SideMenu menu={<SideMenuView close={closeSideMenu} />} isOpen={sideMenuState}>
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
