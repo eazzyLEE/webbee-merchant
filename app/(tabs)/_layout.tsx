@@ -1,8 +1,12 @@
+import SideMenu from '@chakrahq/react-native-side-menu';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Feather from '@expo/vector-icons/Feather';
 import { Link, Tabs } from 'expo-router';
 import { Pressable, useColorScheme } from 'react-native';
 
 import Colors from '../../constants/Colors';
+import SideMenuView from '../side-menu';
+import { useState } from 'react';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -16,40 +20,39 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const [sideMenuState, setSideMenu] = useState(false);
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
+    <SideMenu menu={<SideMenuView />} isOpen={sideMenuState}>
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        }}>
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: 'Category Settings',
+            tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+            headerLeft: () => (
+              <Pressable onPress={() => setSideMenu(!sideMenuState)}>
+                <Feather
+                    name="menu"
                     size={25}
                     color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
+                    style={{ marginLeft: 15 }}
+                    />
               </Pressable>
-            </Link>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="two"
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-    </Tabs>
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="Rented"
+          options={{
+            title: 'Rented',
+            tabBarIcon: ({ color }) => <TabBarIcon name="file-text-o" color={color} />,
+          }}
+        />
+      </Tabs>
+    </SideMenu>
   );
 }
